@@ -5,19 +5,24 @@
             <rect *ngFor="let i of numbers" class="sigma-selector"
                 [ngClass]="user != undefined  && user.sigma == i ? 'selected-sigma' : ''"
                 [attr.x]="calculateCoordsArea(i).x +'%'" [attr.y]="calculateCoordsArea(i).y +'%'" width="9.67%"
-                height="6.84%" (click)="setSelected($event, i)" />
+                height="6.84%" (click)="setSelected(i)" />
         </svg>
     </div>
     <div id="sidebar">
         <section id="tools">
             <app-search-bar (valueChange)="setFilter($event)"></app-search-bar>
+            <button id="random-button" (click)="setRandom()">Random</button>
         </section>
 
         <section id="friends">
             <h4>Friends</h4>
-            <p *ngFor="let friend of (allFriends | userSearch:filter)" (click)="removeFriend(friend)">
-                {{ friend.name }}
-            </p>
+            <div *ngFor="let friend of (allFriends | userSearch:filter)" class="friend">
+                <p>{{ friend.name }}</p>
+                <div class="buttons">
+                    <img class="remove-friend" (click)="removeFriend(friend)" src="../../assets/remove-svg.svg">
+                    <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility($event)" src="../../assets/eye-open-svg.svg">
+                </div>
+            </div>
             <p *ngIf="(allFriends | userSearch:filter).length === 0">
                 No friend found
             </p>
@@ -25,9 +30,12 @@
 
         <section id="other-users">
             <h4>Other users</h4>
-            <p *ngFor="let otherUser of (allOtherUsers | userSearch:filter)" (click)="addFriend(otherUser)">
-                {{otherUser.name }}
-            </p>
+            <div *ngFor="let otherUser of (allOtherUsers | userSearch:filter)" class="other-user">
+                <p>{{ otherUser.name }}</p>
+                <div class="buttons">
+                    <img class="remove-friend" (click)="addFriend(otherUser)" src="../../assets/add-svg.svg">
+                </div>
+            </div>
             <p *ngIf="(allOtherUsers | userSearch:filter).length === 0">
                 No user found
             </p>

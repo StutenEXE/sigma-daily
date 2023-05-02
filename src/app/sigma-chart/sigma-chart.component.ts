@@ -10,7 +10,6 @@ import { UsersService } from '../shared/services/users.service';
   styleUrls: ['./sigma-chart.component.scss']
 })
 export class SigmaChartComponent implements OnInit {
-
   readonly NUMBER_OF_SIGMAS = 130;
 
   readonly X_STEP = (490 * 100) / 4960;
@@ -85,13 +84,17 @@ export class SigmaChartComponent implements OnInit {
     };
   }
 
-  setSelected(event: MouseEvent, sigmaIndex: number) {
+  setSelected(sigmaIndex: number) {
     if (this.user === undefined) {
       return;
     }
     console.log(this.user);
     this.user.sigma = sigmaIndex;
     this.userService.updateSigma(sigmaIndex);
+  }
+
+  setRandom() {
+    this.setSelected(Math.floor(Math.random() * 129))
   }
 
   addFriend(newFriend: User) {
@@ -108,5 +111,16 @@ export class SigmaChartComponent implements OnInit {
 
   setFilter(newFilter: string) {
     this.filter = newFilter;
+  }
+
+  toggleSigmaVisibility(event: MouseEvent) {
+    let button = event.target as HTMLElement;
+    if (button.getAttribute('src') === "../../assets/eye-open-svg.svg") {
+      button.setAttribute('src', "../../assets/eye-closed-svg.svg");
+      console.log(button.getAttribute('src'));
+    }
+    else {
+      button.setAttribute('src', '../../assets/eye-open-svg.svg');
+    } 
   }
 }

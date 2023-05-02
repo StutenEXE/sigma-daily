@@ -1,10 +1,11 @@
 .container {
+    width: 67vw;
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .img-overlay-wrap {
-    width: 70vw;
     position: relative;
     display: inline-block;
 }
@@ -17,18 +18,18 @@
 }
 
 .sigma-selector {
-    stroke-width: 0.14%; // 10px ratio to 7016 => (10*100)/7016
+    stroke-width: 0.28%; // 10px ratio to 7016 => (10*100)/7016
     fill: transparent;
     z-index: 3;
     cursor: pointer;
 }
 
 .sigma-selector:hover {
-    stroke: #fff;
+    stroke: #1da3fd;
 }
 
 .selected-sigma {
-    stroke: #fff;
+    stroke: #1da3fd;
 }
 
 .img-overlay-wrap img {
@@ -39,21 +40,96 @@
 
 #sidebar {
     width: 30vw;
-    height: auto;
+    height: 85vh;
+    position: fixed;
+    top: 15vh;
+    right: 0;
     background-color: red;
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    *:first-child {
-        margin-top: 5vh;
+}
+
+#sidebar>*:first-child {
+    margin-top: 5vh;
+}
+
+#tools {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vh;
+
+    #random-button {
+        width: 50%;
+        padding: 12.5px 30px;
+        border: 0;
+        border-radius: 100px;
+        background-color: #2ba8fb;
+        color: #ffffff;
+        font-weight: Bold;
+        transition: all 0.5s;
+        cursor: pointer;
+    }
+
+    #random-button:hover {
+        background-color: #6fc5ff;
+        box-shadow: 0 0 20px #6fc5ff50;
+    }
+
+    #random-button:active {
+        background-color: #3d94cf;
+        transition: all 0.25s;
+        -webkit-transition: all 0.25s;
+        box-shadow: none;
     }
 }
 
-#friends, #other-users {
+#friends,
+#other-users {
     width: 75%;
 }
 
-#friends {}
+.friend,
+.other-user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
 
-#other-users {}
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        gap: 1vw;
+
+        img {
+            width: 4vh;
+            padding: 0.2vw;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: 300ms;
+        }
+
+        img:hover {
+            background-color: lightgray;
+        }
+    }
+}
+
+.friend:first-of-type,
+.other-user:first-of-type {
+    border-top: 1px solid black;
+}
+
+input[type=color] {
+    display: none;
+}
+
+span {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    display: inline-block;
+}
