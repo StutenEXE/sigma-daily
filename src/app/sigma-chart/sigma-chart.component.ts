@@ -10,6 +10,9 @@ import { UsersService } from '../shared/services/users.service';
   styleUrls: ['./sigma-chart.component.scss']
 })
 export class SigmaChartComponent implements OnInit {
+  readonly DEFAULT_STROKE_COLOR =  "#1da3fd";
+  readonly DEFAULT_FRIEND_STROKE_COLOR = "#ffffff";
+
   readonly NUMBER_OF_SIGMAS = 130;
 
   readonly X_STEP = (490 * 100) / 4960;
@@ -25,7 +28,10 @@ export class SigmaChartComponent implements OnInit {
   user!: User;
 
   allFriends: User[] = [];
+  shownFriendsUids: string[] = [];
   allOtherUsers: User[] = [];
+
+  friendColors!: Map<string, string>;
 
   filter: string = "";
 
@@ -41,12 +47,13 @@ export class SigmaChartComponent implements OnInit {
       }
     );
 
-    this.getAllUsers()
+    this.getAllUsers();
 
     this.numbers = Array(this.NUMBER_OF_SIGMAS).fill(null).map((x, i) => i);
   }
 
   getAllUsers() {
+    this.friendColors = new Map<string, string>();
     // We retreive all susers that are neither friends or the current user
     this.usersService.getAllUsers().then(
       data => {
@@ -58,6 +65,9 @@ export class SigmaChartComponent implements OnInit {
             Object.keys(this.user.friends).includes(user.uid)) {
 
             this.allFriends.push(user);
+
+            this.friendColors.set(user.uid, "#fff");
+            this.shownFriendsUids.push(user.uid);
           }
 
           // else but not current user
@@ -67,7 +77,25 @@ export class SigmaChartComponent implements OnInit {
         })
       }
     );
+  }
 
+  showSigma(i: number) {
+    for(let friend of this.allFriends) {
+      if (friend.sigma === i) {
+        console.log(this.shownFriendsUids.includes(friend.uid));
+        return this.shownFriendsUids.includes(friend.uid);
+      }
+    }
+    return this.user != undefined  && this.user.sigma == i;
+  }
+
+  getStrokeColor(i: number) {
+    for(let friend of this.allFriends) {
+      if (friend.sigma === i) {
+        return this.friendColors.get(friend.uid);
+      }
+    }
+    return this.DEFAULT_STROKE_COLOR;
   }
 
   calculateCoordsArea(i: number) {
@@ -88,7 +116,6 @@ export class SigmaChartComponent implements OnInit {
     if (this.user === undefined) {
       return;
     }
-    console.log(this.user);
     this.user.sigma = sigmaIndex;
     this.userService.updateSigma(sigmaIndex);
   }
@@ -101,11 +128,15 @@ export class SigmaChartComponent implements OnInit {
     this.userService.addFriend(newFriend);
     this.allOtherUsers.splice(this.allOtherUsers.indexOf(newFriend), 1);
     this.allFriends.push(newFriend);
+    this.shownFriendsUids.push(newFriend.uid);
+    this.friendColors.set(newFriend.uid, this.DEFAULT_FRIEND_STROKE_COLOR);
   }
 
   removeFriend(oldFriend: User) {
     this.userService.removeFriend(oldFriend);
     this.allFriends.splice(this.allOtherUsers.indexOf(oldFriend), 1);
+    this.shownFriendsUids.splice(this.shownFriendsUids.indexOf(oldFriend.uid), 1);
+    this.friendColors.delete(oldFriend.uid);
     this.allOtherUsers.push(oldFriend);
   }
 
@@ -113,14 +144,19 @@ export class SigmaChartComponent implements OnInit {
     this.filter = newFilter;
   }
 
-  toggleSigmaVisibility(event: MouseEvent) {
+  toggleSigmaVisibility(friendUid: string, event: MouseEvent) {
     let button = event.target as HTMLElement;
     if (button.getAttribute('src') === "../../assets/eye-open-svg.svg") {
       button.setAttribute('src', "../../assets/eye-closed-svg.svg");
-      console.log(button.getAttribute('src'));
+      this.shownFriendsUids.splice(this.shownFriendsUids.indexOf(friendUid), 1)
     }
     else {
       button.setAttribute('src', '../../assets/eye-open-svg.svg');
+      this.shownFriendsUids.push(friendUid);
     } 
+  }
+
+  setFriendColor(friendUid: string, event: any) {
+    this.friendColors.set(friendUid, event.target.value);
   }
 }

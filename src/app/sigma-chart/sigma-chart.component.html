@@ -3,9 +3,10 @@
         <img id="sigma-chart" src="../../assets/sigma_scale.jpg" alt="sigma chart">
         <svg id="svg-overlay" width="100%" height="100%">
             <rect *ngFor="let i of numbers" class="sigma-selector"
-                [ngClass]="user != undefined  && user.sigma == i ? 'selected-sigma' : ''"
+                [ngClass]="showSigma(i) ? 'selected-sigma' : ''"
                 [attr.x]="calculateCoordsArea(i).x +'%'" [attr.y]="calculateCoordsArea(i).y +'%'" width="9.67%"
-                height="6.84%" (click)="setSelected(i)" />
+                height="6.84%" (click)="setSelected(i)" 
+                [ngStyle]="showSigma(i) ? {stroke: getStrokeColor(i)} : {stroke: 'none'}"/>
         </svg>
     </div>
     <div id="sidebar">
@@ -20,7 +21,8 @@
                 <p>{{ friend.name }}</p>
                 <div class="buttons">
                     <img class="remove-friend" (click)="removeFriend(friend)" src="../../assets/remove-svg.svg">
-                    <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility($event)" src="../../assets/eye-open-svg.svg">
+                    <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility(friend.uid, $event)" src="../../assets/eye-open-svg.svg">
+                    <input type="color" value="#ffffff" (change)="setFriendColor(friend.uid, $event)">
                 </div>
             </div>
             <p *ngIf="(allFriends | userSearch:filter).length === 0">

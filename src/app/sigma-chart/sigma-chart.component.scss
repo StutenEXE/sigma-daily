@@ -103,15 +103,17 @@
         flex-direction: row;
         gap: 1vw;
 
-        img {
+        img, input[type=color] {
             width: 4vh;
             padding: 0.2vw;
             cursor: pointer;
             border-radius: 50%;
             transition: 300ms;
+            background-color: transparent;
+            border: transparent;
         }
 
-        img:hover {
+        img:hover, input[type=color]:hover {
             background-color: lightgray;
         }
     }
@@ -120,16 +122,4 @@
 .friend:first-of-type,
 .other-user:first-of-type {
     border-top: 1px solid black;
-}
-
-input[type=color] {
-    display: none;
-}
-
-span {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    background-color: red;
-    display: inline-block;
 }
