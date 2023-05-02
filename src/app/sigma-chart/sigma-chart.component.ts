@@ -28,6 +28,8 @@ export class SigmaChartComponent implements OnInit {
   allFriends: User[] = [];
   allOtherUsers: User[] = [];
 
+  filter: string = "";
+
   constructor(private auth: AuthService,
     private userService: UserService,
     private usersService: UsersService) { }
@@ -43,7 +45,6 @@ export class SigmaChartComponent implements OnInit {
     this.getAllUsers()
 
     this.numbers = Array(this.NUMBER_OF_SIGMAS).fill(null).map((x, i) => i);
-    console.log(this.numbers)
   }
 
   getAllUsers() {
@@ -103,5 +104,9 @@ export class SigmaChartComponent implements OnInit {
     this.userService.removeFriend(oldFriend);
     this.allFriends.splice(this.allOtherUsers.indexOf(oldFriend), 1);
     this.allOtherUsers.push(oldFriend);
+  }
+
+  setFilter(newFilter: string) {
+    this.filter = newFilter;
   }
 }

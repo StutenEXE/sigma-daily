@@ -9,14 +9,29 @@
         </svg>
     </div>
     <div id="sidebar">
+        <section id="tools">
+            <app-search-bar (valueChange)="setFilter($event)"></app-search-bar>
+        </section>
+
         <section id="friends">
             <h4>Friends</h4>
-            <p *ngFor="let friend of allFriends" (click)="removeFriend(friend)"> {{ friend.name }}</p>
+            <p *ngFor="let friend of (allFriends | userSearch:filter)" (click)="removeFriend(friend)">
+                {{ friend.name }}
+            </p>
+            <p *ngIf="(allFriends | userSearch:filter).length === 0">
+                No friend found
+            </p>
         </section>
-        <section id="friends">
+
+        <section id="other-users">
             <h4>Other users</h4>
-            <p *ngFor="let otherUser of allOtherUsers" (click)="addFriend(otherUser)"> {{ otherUser.name }}</p>
+            <p *ngFor="let otherUser of (allOtherUsers | userSearch:filter)" (click)="addFriend(otherUser)">
+                {{otherUser.name }}
+            </p>
+            <p *ngIf="(allOtherUsers | userSearch:filter).length === 0">
+                No user found
+            </p>
         </section>
-        
+
     </div>
 </div>
