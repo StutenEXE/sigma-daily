@@ -1,7 +1,6 @@
 .img-overlay-wrap {
     position: relative;
     display: inline-block;
-    transform: scale(0.5);
 }
 
 #svg-overlay {
@@ -11,12 +10,11 @@
     z-index: 2;
 }
 
-#sigma-chart {
-    // z-index: -1;
-}
+// #sigma-chart {
+// }
 
 .sigma-selector {
-    stroke-width: 5px;
+    stroke-width: 0.14%; // 10px ratio to 7016 => (10*100)/7016
     fill: transparent;
     z-index: 3;
     cursor: pointer;
@@ -25,3 +23,9 @@
 .sigma-selector:hover {
     stroke: #fff;
 }
+
+.img-overlay-wrap img { /* <= optional, for responsiveness */
+    display: block;
+    max-width: 100%;
+    height: auto;
+ }

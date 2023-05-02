@@ -22,8 +22,10 @@ export class SigmaChartComponent implements OnInit {
     let x = i % 10;
     let y = Math.floor(i / 10);
     console.log(i + " = (" + x + ", " + y + ")")
-    let x1 = 35 + 490 * x;
-    let y1 = 573 + 490 * y;
+    // let x1 = 35 + 490 * x;
+    // let y1 = 573 + 490 * y;
+    let x1 = 0.7 + x * 9.88;
+    let y1 = 8.17 + y * 6.98;
     return {
       x: x1,
       y: y1

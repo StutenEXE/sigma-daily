@@ -1,11 +1,7 @@
-
-
 <div class="img-overlay-wrap">
-
     <img id="sigma-chart" src="../../assets/sigma_scale.jpg" alt="sigma chart">
-    <svg id="svg-overlay" xmlns="http://www.w3.org/2000/svg" width="4960" height="7016">
+    <svg id="svg-overlay" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
         <rect *ngFor="let i of numbers" class="sigma-selector" 
-        [attr.x]="calculateCoordsArea(i).x" [attr.y]="calculateCoordsArea(i).y" width="480" height="480" />
+        [attr.x]="calculateCoordsArea(i).x +'%'" [attr.y]="calculateCoordsArea(i).y +'%'" width="9.67%" height="6.84%" />
     </svg>
-
 </div>
