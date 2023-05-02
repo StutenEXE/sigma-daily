@@ -6,8 +6,6 @@ import { NgModule } from "@angular/core";
         CommonModule
     ],
     declarations: [ ],
-    exports: [
-        
-    ]
+    exports: [ ]
 })
 export class SharedModule { }

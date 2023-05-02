@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../shared/services/user.service';
-import { user } from '@angular/fire/auth';
 import { User } from '../shared/models/user';
+import { AuthService } from '../shared/services/auth.service';
+import { UsersService } from '../shared/services/users.service';
 
 @Component({
   selector: 'app-sigma-chart',
@@ -18,19 +19,55 @@ export class SigmaChartComponent implements OnInit {
   readonly X_MARGIN = (35 * 100) / 4960;
   readonly Y_MARGIN = (573 * 100) / 7016;
 
+  // readonly X_SIGMA_SIZE = (480 * 100) / 4960;
+  // readonly Y_SIGMA_SIZE = (480 * 100) / 7016;
+
   numbers!: number[];
   user!: User;
 
-  constructor(private userService: UserService) { }
+  allFriends: User[] = [];
+  allOtherUsers: User[] = [];
+
+  constructor(private auth: AuthService,
+    private userService: UserService,
+    private usersService: UsersService) { }
 
   ngOnInit(): void {
+    this.auth.updateCurrentUser();
     this.userService.getUser().then(
       data => {
         this.user = data.val();
       }
     );
+
+    this.getAllUsers()
+
     this.numbers = Array(this.NUMBER_OF_SIGMAS).fill(null).map((x, i) => i);
     console.log(this.numbers)
+  }
+
+  getAllUsers() {
+    // We retreive all susers that are neither friends or the current user
+    this.usersService.getAllUsers().then(
+      data => {
+        data.forEach((userdata) => {
+          let user = userdata.val() as User;
+          // If friend
+          if (this.user.friends !== undefined &&
+            this.user.uid !== user.uid &&
+            Object.keys(this.user.friends).includes(user.uid)) {
+
+            this.allFriends.push(user);
+          }
+
+          // else but not current user
+          else if (this.user.uid !== user.uid) {
+            this.allOtherUsers.push(user);
+          }
+        })
+      }
+    );
+
   }
 
   calculateCoordsArea(i: number) {
@@ -40,7 +77,7 @@ export class SigmaChartComponent implements OnInit {
     // let x1 = 35 + 490 * x;
     // let y1 = 573 + 490 * y;
     let x1 = this.X_MARGIN + x * this.X_STEP;
-    let y1 = 8.17 + y * this.Y_STEP;
+    let y1 = this.Y_MARGIN + y * this.Y_STEP;
     return {
       x: x1,
       y: y1
@@ -48,9 +85,23 @@ export class SigmaChartComponent implements OnInit {
   }
 
   setSelected(event: MouseEvent, sigmaIndex: number) {
-    if (user != undefined) {
-      this.user.sigma = sigmaIndex;
-      this.userService.updateSigma(sigmaIndex);
+    if (this.user === undefined) {
+      return;
     }
+    console.log(this.user);
+    this.user.sigma = sigmaIndex;
+    this.userService.updateSigma(sigmaIndex);
+  }
+
+  addFriend(newFriend: User) {
+    this.userService.addFriend(newFriend);
+    this.allOtherUsers.splice(this.allOtherUsers.indexOf(newFriend), 1);
+    this.allFriends.push(newFriend);
+  }
+
+  removeFriend(oldFriend: User) {
+    this.userService.removeFriend(oldFriend);
+    this.allFriends.splice(this.allOtherUsers.indexOf(oldFriend), 1);
+    this.allOtherUsers.push(oldFriend);
   }
 }

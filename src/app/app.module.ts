@@ -14,13 +14,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { DatabaseModule } from '@angular/fire/database';
 import { SharedModule } from './shared/shared.module';
 import { SigmaChartComponent } from './sigma-chart/sigma-chart.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    SigmaChartComponent
+    SigmaChartComponent,
+    NavbarComponent
   ],
   imports: [
     provideFirebaseApp(() => initializeApp(environment.firebase)),

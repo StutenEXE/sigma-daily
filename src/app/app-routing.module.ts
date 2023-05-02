@@ -25,7 +25,8 @@ const routes: Routes = [
   },
   {
     path: 'sigma-chart',
-    component: SigmaChartComponent
+    component: SigmaChartComponent,
+    ...canActivate(redirectToLogin)
   },
   {
     path: '**',

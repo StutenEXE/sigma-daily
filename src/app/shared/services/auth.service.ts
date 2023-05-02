@@ -33,8 +33,8 @@ export class AuthService {
     authState(this.auth).subscribe({
       next: (currUser) => {
         this.currentUser = currUser;
-        localStorage.setItem("uid", this.currentUser?.uid ? this.currentUser.uid : "");
-        console.log(`Current user : \n - ${this.currentUser?.displayName}\n - ${this.currentUser?.uid} `)
+        localStorage.setItem("sigma-uid", this.currentUser?.uid ? this.currentUser.uid : "");
+        // console.log(`Current user : \n - ${this.currentUser?.displayName}\n - ${this.currentUser?.uid} `)
       }
     });
   }

@@ -1,4 +1,10 @@
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
 .img-overlay-wrap {
+    width: 70vw;
     position: relative;
     display: inline-block;
 }
@@ -9,9 +15,6 @@
     left: 0;
     z-index: 2;
 }
-
-// #sigma-chart {
-// }
 
 .sigma-selector {
     stroke-width: 0.14%; // 10px ratio to 7016 => (10*100)/7016
@@ -28,8 +31,18 @@
     stroke: #fff;
 }
 
-.img-overlay-wrap img { /* <= optional, for responsiveness */
+.img-overlay-wrap img {
     display: block;
     max-width: 100%;
     height: auto;
- }
+}
+
+#sidebar {
+    width: 30vw;
+    height: auto;
+    background-color: red;
+}
+
+#friends {}
+
+#other-users {}

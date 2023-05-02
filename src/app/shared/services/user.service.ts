@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Database, DataSnapshot, get, ref, set, update } from '@angular/fire/database';
 import { User } from "../models/user";
 import { AuthService } from "./auth.service";
+import { remove } from "firebase/database";
 
 @Injectable({
     providedIn: 'root',
@@ -12,18 +13,19 @@ export class UserService {
 
     constructor(private db: Database, private auth: AuthService) { }
 
-    setPath() {
-        let uid = localStorage.getItem("uid");
+    setPath(url ?: string) {
+        let uid = localStorage.getItem("sigma-uid");
         this.dbPath = this.dbBasePath + uid;
+        if (url !== undefined) {
+            this.dbPath = this.dbPath + url;
+        } 
     }
 
     createUser() {
         let user: User = new User();
         user.uid = this.auth.currentUser?.uid ? this.auth.currentUser.uid : "";
         user.name = this.auth.currentUser?.displayName ? this.auth.currentUser.displayName : "";
-        user.sigma = null;
         this.setPath();
-        console.log(this.dbPath);
         set(ref(this.db, this.dbPath), user);
     }
 
@@ -33,10 +35,20 @@ export class UserService {
         return get(dbRef);
     }
 
-    // Takes in the new number of coins
-    updateSigma(newSigma: number) {
+    updateSigma(newSigma: number | null) {
+        this.setPath();
         update(ref(this.db, this.dbPath), {
             sigma: newSigma
         });
+    }
+    
+    addFriend(friend: User) {
+        this.setPath("/friends/" + friend.uid);
+        set(ref(this.db, this.dbPath), friend.name);
+    }
+
+    removeFriend(friend: User) {
+        this.setPath("/friends/" + friend.uid);
+        remove(ref(this.db, this.dbPath));
     }
 }
