@@ -1,3 +1,9 @@
+.img-overlay-wrap {
+    position: relative;
+    display: inline-block;
+    transform: scale(0.5);
+}
+
 #svg-overlay {
     position: absolute;
     top: 0;
@@ -18,9 +24,4 @@
 
 .sigma-selector:hover {
     stroke: #fff;
-}
-
-.img-overlay-wrap {
-    position: relative;
-    display: inline-block;
 }
