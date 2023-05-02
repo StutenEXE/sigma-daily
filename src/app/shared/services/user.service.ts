@@ -21,7 +21,7 @@ export class UserService {
         let user: User = new User();
         user.uid = this.auth.currentUser?.uid ? this.auth.currentUser.uid : "";
         user.name = this.auth.currentUser?.displayName ? this.auth.currentUser.displayName : "";
-        user.sigma = true;
+        user.sigma = null;
         this.setPath();
         console.log(this.dbPath);
         set(ref(this.db, this.dbPath), user);
@@ -34,9 +34,9 @@ export class UserService {
     }
 
     // Takes in the new number of coins
-    updateCoins(newAmount: number) {
+    updateSigma(newSigma: number) {
         update(ref(this.db, this.dbPath), {
-            coins: newAmount
+            sigma: newSigma
         });
     }
 }

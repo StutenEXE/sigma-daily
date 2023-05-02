@@ -2,6 +2,9 @@
     <img id="sigma-chart" src="../../assets/sigma_scale.jpg" alt="sigma chart">
     <svg id="svg-overlay" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
         <rect *ngFor="let i of numbers" class="sigma-selector" 
-        [attr.x]="calculateCoordsArea(i).x +'%'" [attr.y]="calculateCoordsArea(i).y +'%'" width="9.67%" height="6.84%" />
+        [ngClass]="user != undefined && user.sigma == i ? 'selected-sigma' : ''"
+        [attr.x]="calculateCoordsArea(i).x +'%'" [attr.y]="calculateCoordsArea(i).y +'%'" 
+        width="9.67%" height="6.84%" 
+        (click)="setSelected($event, i)" />
     </svg>
 </div>
