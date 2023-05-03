@@ -17,15 +17,16 @@
 
         <section id="friends">
             <h4>Friends</h4>
-            <div *ngFor="let friend of (allFriends | userSearch:filter)" class="friend">
-                <p>{{ friend.name }}</p>
+            <div *ngFor="let friend of (allFriends | friendSearch:filter)" class="friend">
+                <p>{{ friend.data.name }}</p>
                 <div class="buttons">
                     <img class="remove-friend" (click)="removeFriend(friend)" src="../../assets/remove-svg.svg">
-                    <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility(friend.uid, $event)" src="../../assets/eye-open-svg.svg">
-                    <input type="color" value="#ffffff" (change)="setFriendColor(friend.uid, $event)">
+                    <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility(friend)" 
+                    [src]="friend.showSigma ? '../../assets/eye-open-svg.svg' : '../../assets/eye-closed-svg.svg'">
+                    <input type="color" value="#ffffff" (change)="setFriendColor(friend, $event)">
                 </div>
             </div>
-            <p *ngIf="(allFriends | userSearch:filter).length === 0">
+            <p *ngIf="(allFriends | friendSearch:filter).length === 0">
                 No friend found
             </p>
         </section>

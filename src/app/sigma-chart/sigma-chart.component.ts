@@ -3,6 +3,7 @@ import { UserService } from '../shared/services/user.service';
 import { User } from '../shared/models/user';
 import { AuthService } from '../shared/services/auth.service';
 import { UsersService } from '../shared/services/users.service';
+import { Friend } from '../shared/models/friend';
 
 @Component({
   selector: 'app-sigma-chart',
@@ -10,7 +11,7 @@ import { UsersService } from '../shared/services/users.service';
   styleUrls: ['./sigma-chart.component.scss']
 })
 export class SigmaChartComponent implements OnInit {
-  readonly DEFAULT_STROKE_COLOR =  "#1da3fd";
+  readonly DEFAULT_STROKE_COLOR = "#1da3fd";
   readonly DEFAULT_FRIEND_STROKE_COLOR = "#ffffff";
 
   readonly NUMBER_OF_SIGMAS = 130;
@@ -27,11 +28,8 @@ export class SigmaChartComponent implements OnInit {
   numbers!: number[];
   user!: User;
 
-  allFriends: User[] = [];
-  shownFriendsUids: string[] = [];
+  allFriends: Friend[] = [];
   allOtherUsers: User[] = [];
-
-  friendColors!: Map<string, string>;
 
   filter: string = "";
 
@@ -52,8 +50,15 @@ export class SigmaChartComponent implements OnInit {
     this.numbers = Array(this.NUMBER_OF_SIGMAS).fill(null).map((x, i) => i);
   }
 
+  initNewFriend(data: User) {
+    let friend = new Friend();
+    friend.data = data;
+    friend.color = this.DEFAULT_FRIEND_STROKE_COLOR;
+    friend.showSigma = true;
+    return friend;
+  }
+
   getAllUsers() {
-    this.friendColors = new Map<string, string>();
     // We retreive all susers that are neither friends or the current user
     this.usersService.getAllUsers().then(
       data => {
@@ -64,10 +69,11 @@ export class SigmaChartComponent implements OnInit {
             this.user.uid !== user.uid &&
             Object.keys(this.user.friends).includes(user.uid)) {
 
-            this.allFriends.push(user);
-
-            this.friendColors.set(user.uid, "#fff");
-            this.shownFriendsUids.push(user.uid);
+            let friend = new Friend();
+            friend.data = user;
+            friend.color = this.DEFAULT_FRIEND_STROKE_COLOR;
+            friend.showSigma = true;
+            this.allFriends.push(friend);
           }
 
           // else but not current user
@@ -80,19 +86,18 @@ export class SigmaChartComponent implements OnInit {
   }
 
   showSigma(i: number) {
-    for(let friend of this.allFriends) {
-      if (friend.sigma === i) {
-        console.log(this.shownFriendsUids.includes(friend.uid));
-        return this.shownFriendsUids.includes(friend.uid);
+    for (let friend of this.allFriends) {
+      if (friend.data.sigma === i) {
+        return friend.showSigma;
       }
     }
-    return this.user != undefined  && this.user.sigma == i;
+    return this.user != undefined && this.user.sigma == i;
   }
 
   getStrokeColor(i: number) {
-    for(let friend of this.allFriends) {
-      if (friend.sigma === i) {
-        return this.friendColors.get(friend.uid);
+    for (let friend of this.allFriends) {
+      if (friend.data.sigma === i) {
+        return friend.color;
       }
     }
     return this.DEFAULT_STROKE_COLOR;
@@ -127,36 +132,28 @@ export class SigmaChartComponent implements OnInit {
   addFriend(newFriend: User) {
     this.userService.addFriend(newFriend);
     this.allOtherUsers.splice(this.allOtherUsers.indexOf(newFriend), 1);
-    this.allFriends.push(newFriend);
-    this.shownFriendsUids.push(newFriend.uid);
-    this.friendColors.set(newFriend.uid, this.DEFAULT_FRIEND_STROKE_COLOR);
+    this.allFriends.push(this.initNewFriend(newFriend));
   }
 
-  removeFriend(oldFriend: User) {
-    this.userService.removeFriend(oldFriend);
-    this.allFriends.splice(this.allOtherUsers.indexOf(oldFriend), 1);
-    this.shownFriendsUids.splice(this.shownFriendsUids.indexOf(oldFriend.uid), 1);
-    this.friendColors.delete(oldFriend.uid);
-    this.allOtherUsers.push(oldFriend);
+  removeFriend(oldFriend: Friend) {
+    this.userService.removeFriend(oldFriend.data);
+    this.allFriends.forEach((friend, index) => {
+      if (friend.data.uid === oldFriend.data.uid) {
+        this.allFriends.splice(index, 1);
+      }
+    });
+    this.allOtherUsers.push(oldFriend.data);
   }
 
   setFilter(newFilter: string) {
     this.filter = newFilter;
   }
 
-  toggleSigmaVisibility(friendUid: string, event: MouseEvent) {
-    let button = event.target as HTMLElement;
-    if (button.getAttribute('src') === "../../assets/eye-open-svg.svg") {
-      button.setAttribute('src', "../../assets/eye-closed-svg.svg");
-      this.shownFriendsUids.splice(this.shownFriendsUids.indexOf(friendUid), 1)
-    }
-    else {
-      button.setAttribute('src', '../../assets/eye-open-svg.svg');
-      this.shownFriendsUids.push(friendUid);
-    } 
+  toggleSigmaVisibility(friend: Friend) {
+    friend.showSigma = !friend.showSigma;
   }
 
-  setFriendColor(friendUid: string, event: any) {
-    this.friendColors.set(friendUid, event.target.value);
+  setFriendColor(friend: Friend, event: any) {
+    friend.color = event.target.value;
   }
 }
