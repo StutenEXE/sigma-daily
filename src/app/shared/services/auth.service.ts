@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   userIsConnected() {
-    return localStorage.getItem("sigma-uid") !== null;
+    return localStorage.getItem("sigma-uid") !== null && localStorage.getItem("sigma-uid") !== "";
   }
 
   logout(): Observable<any> {
