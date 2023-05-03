@@ -12,12 +12,12 @@
 }
 
 #chart-loader {
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 68vw;
     height: 85vh;
 }
 
