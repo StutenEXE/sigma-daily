@@ -17,7 +17,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 68vw;
+    width: 67vw;
     height: 85vh;
 }
 
@@ -54,12 +54,13 @@
 }
 
 #sidebar {
-    width: 30vw;
+    width: 29vw;
     height: 85vh;
     position: fixed;
     top: 15vh;
     right: 0;
     background-color: red;
+    border-left: 0.5vh solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -116,16 +117,18 @@
     .buttons {
         display: flex;
         flex-direction: row;
+        justify-content: flex-end;
         gap: 1vw;
 
         img, input[type=color] {
-            width: 4vh;
+            width: 2vw;
+            height: 2vw;
             padding: 0.2vw;
             cursor: pointer;
             border-radius: 50%;
-            transition: 300ms;
             background-color: transparent;
             border: transparent;
+            transition: background-color 300ms;
         }
 
         img:hover, input[type=color]:hover {
