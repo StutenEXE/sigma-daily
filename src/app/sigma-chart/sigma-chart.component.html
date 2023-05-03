@@ -1,11 +1,15 @@
 <div class="container">
     <div class="img-overlay-wrap">
-        <img id="sigma-chart" src="../../assets/sigma_scale.jpg" alt="sigma chart">
+        <div id="chart-loader" *ngIf="sigmaChartLoading">
+            <app-loader></app-loader>
+        </div>
+        <img id="sigma-chart" [hidden]="sigmaChartLoading" (load)="onSigmaChartLoad()"
+            src="../../assets/sigma_scale.jpg" alt="sigma chart">
+
         <svg id="svg-overlay" width="100%" height="100%">
-            <rect *ngFor="let i of numbers" class="sigma-selector"
-                [attr.x]="calculateCoordsArea(i).x +'%'" [attr.y]="calculateCoordsArea(i).y +'%'" 
-                width="9.67%" height="6.84%" (click)="setSelected(i)" 
-                [ngStyle]="showSigma(i) ? {stroke: getStrokeColor(i)} : {}"/>
+            <rect *ngFor="let i of numbers" class="sigma-selector" [attr.x]="calculateCoordsArea(i).x +'%'"
+                [attr.y]="calculateCoordsArea(i).y +'%'" width="9.67%" height="6.84%" (click)="setSelected(i)"
+                [ngStyle]="showSigma(i) ? getStrokeStyle(i) : {}" />
         </svg>
     </div>
     <div id="sidebar">
@@ -20,8 +24,8 @@
                 <p>{{ friend.data.name }}</p>
                 <div class="buttons">
                     <img class="remove-friend" (click)="removeFriend(friend)" src="../../assets/remove-svg.svg">
-                    <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility(friend)" 
-                    [src]="friend.showSigma ? '../../assets/eye-open-svg.svg' : '../../assets/eye-closed-svg.svg'">
+                    <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility(friend)"
+                        [src]="friend.showSigma ? '../../assets/eye-open-svg.svg' : '../../assets/eye-closed-svg.svg'">
                     <input type="color" [value]="friend.color" (change)="setFriendColor(friend, $event)">
                 </div>
             </div>

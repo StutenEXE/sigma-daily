@@ -1,13 +1,21 @@
 .container {
-    width: 67vw;
+    // width: 67vw;
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
 .img-overlay-wrap {
+    width: 68vw;
     position: relative;
     display: inline-block;
+}
+
+#chart-loader {
+    position: absolute;
+    top: 20vh;
+    left: 50%;
+    right: 50%;
 }
 
 #svg-overlay {

@@ -33,6 +33,12 @@ export class SigmaChartComponent implements OnInit {
 
   filter: string = "";
 
+  sigmaChartLoading: boolean = true;
+
+  onSigmaChartLoad() {
+    this.sigmaChartLoading = false;
+  }
+
   constructor(private auth: AuthService,
     private userService: UserService,
     private usersService: UsersService) { }
@@ -92,20 +98,20 @@ export class SigmaChartComponent implements OnInit {
 
   showSigma(i: number) {
     for (let friend of this.allFriends) {
-      if (friend.data.sigma === i) {
+      if (friend.data.sigma === i && friend.showSigma) {
         return friend.showSigma;
       }
     }
     return this.user != undefined && this.user.sigma == i;
   }
 
-  getStrokeColor(i: number) {
+  getStrokeStyle(i: number) {
     for (let friend of this.allFriends) {
-      if (friend.data.sigma === i) {
-        return friend.color;
+      if (friend.data.sigma === i && friend.showSigma) {
+        return {stroke: friend.color};
       }
     }
-    return this.DEFAULT_STROKE_COLOR;
+    return {stroke: this.DEFAULT_STROKE_COLOR, zindex: 100};
   }
 
   calculateCoordsArea(i: number) {
