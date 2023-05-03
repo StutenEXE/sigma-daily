@@ -39,6 +39,10 @@ export class AuthService {
     });
   }
 
+  userIsConnected() {
+    return localStorage.getItem("sigma-uid") !== null;
+  }
+
   logout(): Observable<any> {
     this.currentUser = null;
     localStorage.clear();

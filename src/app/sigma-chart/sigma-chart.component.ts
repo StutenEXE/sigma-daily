@@ -4,6 +4,7 @@ import { User } from '../shared/models/user';
 import { AuthService } from '../shared/services/auth.service';
 import { UsersService } from '../shared/services/users.service';
 import { Friend } from '../shared/models/friend';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sigma-chart',
@@ -41,9 +42,13 @@ export class SigmaChartComponent implements OnInit {
 
   constructor(private auth: AuthService,
     private userService: UserService,
-    private usersService: UsersService) { }
+    private usersService: UsersService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    if (!this.auth.userIsConnected()) {
+      this.router.navigate(['/']);
+    }
     this.auth.updateCurrentUser();
     this.userService.getUser().then(
       data => {
