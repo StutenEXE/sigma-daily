@@ -22,13 +22,10 @@
     fill: transparent;
     z-index: 3;
     cursor: pointer;
+    stroke: none;
 }
 
 .sigma-selector:hover {
-    stroke: #1da3fd;
-}
-
-.selected-sigma {
     stroke: #1da3fd;
 }
 
