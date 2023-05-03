@@ -53,9 +53,18 @@ export class SigmaChartComponent implements OnInit {
   initNewFriend(data: User) {
     let friend = new Friend();
     friend.data = data;
-    friend.color = this.DEFAULT_FRIEND_STROKE_COLOR;
+    friend.color = this.getRandomHexColor();
     friend.showSigma = true;
     return friend;
+  }
+
+  getRandomHexColor() {
+    let letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   getAllUsers() {
@@ -69,11 +78,7 @@ export class SigmaChartComponent implements OnInit {
             this.user.uid !== user.uid &&
             Object.keys(this.user.friends).includes(user.uid)) {
 
-            let friend = new Friend();
-            friend.data = user;
-            friend.color = this.DEFAULT_FRIEND_STROKE_COLOR;
-            friend.showSigma = true;
-            this.allFriends.push(friend);
+            this.allFriends.push(this.initNewFriend(user));
           }
 
           // else but not current user

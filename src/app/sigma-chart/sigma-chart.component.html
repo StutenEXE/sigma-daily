@@ -22,7 +22,7 @@
                     <img class="remove-friend" (click)="removeFriend(friend)" src="../../assets/remove-svg.svg">
                     <img class="toggle-sigma-friend visible" (click)="toggleSigmaVisibility(friend)" 
                     [src]="friend.showSigma ? '../../assets/eye-open-svg.svg' : '../../assets/eye-closed-svg.svg'">
-                    <input type="color" value="#ffffff" (change)="setFriendColor(friend, $event)">
+                    <input type="color" [value]="friend.color" (change)="setFriendColor(friend, $event)">
                 </div>
             </div>
             <p *ngIf="(allFriends | friendSearch:filter).length === 0">
