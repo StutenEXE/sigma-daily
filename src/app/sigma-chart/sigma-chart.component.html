@@ -16,7 +16,6 @@
                 <rect *ngFor="let i of numbers" class="sigma-selector" [attr.x]="calculateCoordsArea(i).x +'%'"
                     [attr.y]="calculateCoordsArea(i).y +'%'" width="9.67%" height="6.84%" (click)="setSelected(i)"
                     [ngStyle]="showSigma(i) ? getStrokeStyle(i) : {}" filter="url(#svg-blur)"/>
-
             </svg>
         </div>
     </div>
@@ -27,7 +26,7 @@
         </section>
 
         <section id="friends">
-            <h4>Friends</h4>
+            <h3>Friends</h3>
             <div *ngFor="let friend of (allFriends | friendSearch:filter)" class="friend">
                 <p>{{ friend.data.name }}</p>
                 <div class="buttons">
@@ -43,7 +42,7 @@
         </section>
 
         <section id="other-users">
-            <h4>Other users</h4>
+            <h3>Other users</h3>
             <div *ngFor="let otherUser of (allOtherUsers | userSearch:filter)" class="other-user">
                 <p>{{ otherUser.name }}</p>
                 <div class="buttons">

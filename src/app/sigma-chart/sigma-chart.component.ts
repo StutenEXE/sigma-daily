@@ -162,7 +162,7 @@ export class SigmaChartComponent implements OnInit {
   }
 
   setFilter(newFilter: string) {
-    this.filter = newFilter;
+    this.filter = newFilter.trim();
   }
 
   toggleSigmaVisibility(friend: Friend) {
