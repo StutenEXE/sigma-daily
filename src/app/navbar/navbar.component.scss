@@ -19,3 +19,23 @@
 .nav-title {
     font-size: 2.1vw;
 }
+
+.logout-btn {
+    height: 40%;
+    min-width: 10%;
+    border: 1px solid black;
+    background-color: red;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: transform 300ms;
+}
+
+.logout-btn:hover {
+    transform: scale(1.1);
+}
+
+.logout-text {
+    color: white;
+    font-weight: 400;
+    margin: 0;
+}
